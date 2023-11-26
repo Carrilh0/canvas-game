@@ -7,35 +7,34 @@ function startGame() {
 
   myGameBlue = new component(30, 30, "blue", 10, 120);
 }
-function mouseHandler(e) {
-  myGameArea.x = e.pageX;
-  myGameArea.y = e.pageY;
-}
 
-function keyDownHandler(e) {
-  myGameArea.keys = myGameArea.keys || {};
-  myGameArea.keys[e.key] = true;
-}
 
-function keyUpHandler(e) {
-  myGameArea.keys[e.key] = false;
-  myGameBlue.speedX = 0;
-  myGameBlue.speedY = 0;
-}
-
-function touchHandler(e) {
-  myGameArea.x = e.touches[0].screenX;
-  myGameArea.y = e.touches[0].screenY;
-}
-
-function mouseUpAndMouseStartHandler(e) {
-  myGameArea.x = e.pageX;
-  myGameArea.y = e.pageY;
-}
-
-function mouseDownAndMouseEndHandler(e) {
-  myGameArea.x = false;
-  myGameArea.y = false;
+const controlHandlers = {
+  mouse: function(e) {
+    myGameArea.x = e.pageX;
+    myGameArea.y = e.pageY;
+  },
+  keyDown: function(e) {
+    myGameArea.keys = myGameArea.keys || {};
+    myGameArea.keys[e.key] = true;
+  },
+  keyUp: function(e) {
+    myGameArea.keys[e.key] = false;
+    myGameBlue.speedX = 0;
+    myGameBlue.speedY = 0;
+  },
+  touch: function(e) {
+    myGameArea.x = e.touches[0].screenX;
+    myGameArea.y = e.touches[0].screenY;
+  },
+  mouseDonwAndTouchStart: function(e) {
+    myGameArea.x = e.pageX;
+    myGameArea.y = e.pageY;
+  },
+  mouseUpAndMouseEnd:function(e) {
+    myGameArea.x = false;
+    myGameArea.y = false;
+  }
 }
 
 const myGameArea = {
@@ -53,39 +52,27 @@ const myGameArea = {
   },
   setControl: function (type = "keyboard") {
     myGameArea.control = type;
-    window.removeEventListener("keydown", keyDownHandler);
-    window.removeEventListener("keyup", keyUpHandler);
-    window.removeEventListener("mousemove", mouseHandler);
-    window.removeEventListener("touchmove", touchHandler);
-    window.removeEventListener("mousedown", mouseDownAndMouseEndHandler);
-    window.removeEventListener("mouseup", mouseUpAndMouseStartHandler);
-    window.removeEventListener("touchstart", mouseUpAndMouseStartHandler);
-    window.removeEventListener("touchend", mouseDownAndMouseEndHandler);
+    window.removeEventListener("keydown", controlHandlers.keyDown);
+    window.removeEventListener("keyup", controlHandlers.keyUp);
+    window.removeEventListener("mousemove", controlHandlers.mouse);
+    window.removeEventListener("touchmove", controlHandlers.touch);
+    window.removeEventListener("mousedown", controlHandlers.mouseDonwAndTouchStart);
+    window.removeEventListener("mouseup", controlHandlers.mouseUpAndMouseEnd);
+    window.removeEventListener("touchstart", controlHandlers.mouseUpAndMouseEnd);
+    window.removeEventListener("touchend", controlHandlers.mouseDonwAndTouchStart);
 
     if (type === "touch") {
-      window.addEventListener("touchmove", touchHandler);
+      window.addEventListener("touchmove", touch);
     } else if (type == "buttons") {
-      window.addEventListener("mousedown", function (e) {
-        myGameArea.x = e.pageX;
-        myGameArea.y = e.pageY;
-      });
-      window.addEventListener("mouseup", function (e) {
-        myGameArea.x = false;
-        myGameArea.y = false;
-      });
-      window.addEventListener("touchstart", function (e) {
-        myGameArea.x = e.pageX;
-        myGameArea.y = e.pageY;
-      });
-      window.addEventListener("touchend", function (e) {
-        myGameArea.x = false;
-        myGameArea.y = false;
-      });
+      window.addEventListener("mousedown", controlHandlers.mouseDonwAndTouchStart);
+      window.addEventListener("mouseup", controlHandlers.mouseUpAndMouseEnd);
+      window.addEventListener("touchstart", controlHandlers.mouseDonwAndTouchStart);
+      window.addEventListener("touchend", controlHandlers.mouseUpAndMouseEnd);
     } else if (type === "keyboard") {
-      window.addEventListener("keydown", keyDownHandler);
-      window.addEventListener("keyup", keyUpHandler);
+      window.addEventListener("keydown", controlHandlers.keyDown);
+      window.addEventListener("keyup", controlHandlers.keyUp);
     } else if (type === "mouse") {
-      window.addEventListener("mousemove", mouseHandler);
+      window.addEventListener("mousemove", controlHandlers.mouse);
     }
   },
 };
