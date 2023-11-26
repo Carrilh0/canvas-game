@@ -228,12 +228,12 @@ function updateGameArea() {
     x = myGameArea.canvas.width;
     y = myGameArea.canvas.height - 200
 
-    minHeight = 20;
+    minHeight = 80;
     maxHeight = 200;
     height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
 
-    minGap = 50;
-    maxGap = 200;
+    minGap = 40;
+    maxGap = 120;
 
     gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
 
