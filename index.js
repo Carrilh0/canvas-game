@@ -8,7 +8,6 @@ function startGame() {
   myGameBlue = new component(30, 30, "blue", 10, 120);
 }
 
-
 const controlHandlers = {
   mouse: function(e) {
     myGameArea.x = e.pageX;
@@ -62,7 +61,7 @@ const myGameArea = {
     window.removeEventListener("touchend", controlHandlers.mouseDonwAndTouchStart);
 
     if (type === "touch") {
-      window.addEventListener("touchmove", touch);
+      window.addEventListener("touchmove", controlHandlers.touch);
     } else if (type == "buttons") {
       window.addEventListener("mousedown", controlHandlers.mouseDonwAndTouchStart);
       window.addEventListener("mouseup", controlHandlers.mouseUpAndMouseEnd);
