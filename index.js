@@ -120,26 +120,29 @@ function changeControl(type) {
 }
 
 function setControl() {
-  if (myGameArea.control == "keyboard") {
+  const { keys } = myGameArea;
+  const { control } = myGameArea;
+
+  if (control === "keyboard") {
     // Keyboard
-    if (myGameArea.keys && (myGameArea.keys["ArrowUp"] || myGameArea.keys["w"])) {
+    if (keys && (keys["ArrowUp"] || keys["w"])) {
       myGameBlue.speedY = -1;
     }
-    if (myGameArea.keys && (myGameArea.keys["ArrowDown"] || myGameArea.keys["s"])) {
+    if (keys && (keys["ArrowDown"] || keys["s"])) {
       myGameBlue.speedY = 1;
     }
-    if (myGameArea.keys && (myGameArea.keys["ArrowLeft"] || myGameArea.keys["a"])) {
+    if (keys && (keys["ArrowLeft"] || keys["a"])) {
       myGameBlue.speedX = -1;
     }
-    if (myGameArea.keys && (myGameArea.keys["ArrowRight"] || myGameArea.keys["d"])) {
+    if (keys && (keys["ArrowRight"] || keys["d"])) {
       myGameBlue.speedX = 1;
     }
-  } else if (myGameArea.control == "mouse") {
+  } else if (control === "mouse") {
     if (myGameArea.x && myGameArea.y) {
       myGameBlue.x = myGameArea.x;
       myGameBlue.y = myGameArea.y;
     }
-  } else if (myGameArea.control == "buttons") {
+  } else if (control === "buttons") {
     if (myGameArea.x && myGameArea.y) {
       if (myUpBtn.clicked()) {
         myGameBlue.y -= 1;
@@ -148,7 +151,7 @@ function setControl() {
         myGameBlue.y += 1;
       }
       if (myLeftBtn.clicked()) {
-        myGameBlue.x += -1;
+        myGameBlue.x -= 1;
       }
       if (myRightBtn.clicked()) {
         myGameBlue.x += 1;
