@@ -23,8 +23,10 @@ const controlHandlers = {
     myGameBlue.speedY = 0;
   },
   touch: function(e) {
-    myGameArea.x = e.touches[0].screenX;
-    myGameArea.y = e.touches[0].screenY;
+    const rect = document.querySelector('canvas').getBoundingClientRect();
+    const touch = e.touches[0];
+    myGameArea.x = touch.clientX - rect.left;
+    myGameArea.y = touch.clientY - rect.top;
   },
   mouseDonwAndTouchStart: function(e) {
     myGameArea.x = e.pageX;
@@ -136,7 +138,7 @@ function setControl() {
     if (keys && (keys["ArrowRight"] || keys["d"])) {
       myGameBlue.speedX = 1;
     }
-  } else if (control === "mouse") {
+  } else if (control === "mouse" || control === "touch") {
     if (myGameArea.x && myGameArea.y) {
       myGameBlue.x = myGameArea.x;
       myGameBlue.y = myGameArea.y;
