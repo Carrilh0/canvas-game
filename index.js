@@ -135,16 +135,16 @@ function changeControl(type) {
 function setControl() {
   if (myGameArea.control == "keyboard") {
     // Keyboard
-    if (myGameArea.keys && myGameArea.keys["ArrowUp"]) {
+    if (myGameArea.keys && (myGameArea.keys["ArrowUp"] || myGameArea.keys["w"])) {
       myGameBlue.speedY = -1;
     }
-    if (myGameArea.keys && myGameArea.keys["ArrowDown"]) {
+    if (myGameArea.keys && (myGameArea.keys["ArrowDown"] || myGameArea.keys["s"])) {
       myGameBlue.speedY = 1;
     }
-    if (myGameArea.keys && myGameArea.keys["ArrowLeft"]) {
+    if (myGameArea.keys && (myGameArea.keys["ArrowLeft"] || myGameArea.keys["a"])) {
       myGameBlue.speedX = -1;
     }
-    if (myGameArea.keys && myGameArea.keys["ArrowRight"]) {
+    if (myGameArea.keys && (myGameArea.keys["ArrowRight"] || myGameArea.keys["d"])) {
       myGameBlue.speedX = 1;
     }
   } else if (myGameArea.control == "mouse") {
@@ -177,10 +177,7 @@ function setControl() {
 
 function updateGameArea() {
   myGameArea.clear();
-
-
   setControl()
-
   myGameBlue.newPos();
   myGameBlue.update();
 }
