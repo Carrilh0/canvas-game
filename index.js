@@ -5,14 +5,14 @@ function startGame() {
   myLeftBtn = new component(30, 30, "black", 20, 210);
   myRightBtn = new component(30, 30, "black", 80, 210);
 
-  myObstacle = new component(10, 200, "green", 300, 120);
+  myScore = new component("20px", "Consolas", "black", 350, 30, "text");
 
   myGameBlue = new component(30, 30, "blue", 10, 120);
 }
 
 const controlHandlers = {
   mouse: function (e) {
-    myGameArea.canvas.style.cursor = 'none'
+    myGameArea.canvas.style.cursor = "none";
     myGameArea.x = e.pageX;
     myGameArea.y = e.pageY;
   },
@@ -101,10 +101,11 @@ const myGameArea = {
 };
 
 function everyInterval(n) {
-  return (myGameArea.frameNo / n) % 1 == 0 ? true : false
+  return (myGameArea.frameNo / n) % 1 == 0 ? true : false;
 }
 
-function component(width, height, color, x, y) {
+function component(width, height, color, x, y, type) {
+  this.type = type;
   this.width = width;
   this.height = height;
   this.x = x;
@@ -113,8 +114,14 @@ function component(width, height, color, x, y) {
   this.speedY = 0;
   this.update = function () {
     ctx = myGameArea.context;
-    ctx.fillStyle = color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    if (type == "text") {
+      ctx.font = this.width + " " + this.height;
+      ctx.fillStyle = color;
+      ctx.fillText(this.text, this.x, this.y);
+    } else {
+      ctx.fillStyle = color;
+      ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
   };
   this.clicked = function () {
     var myleft = this.x;
@@ -213,7 +220,6 @@ function setControl() {
 let myObstacles = [];
 
 function updateGameArea() {
-  let x, height, gap, minHeight, maxHeight, minGap, maxGap;
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGameBlue.crashWith(myObstacles[i])) {
       myGameArea.stop();
@@ -226,19 +232,23 @@ function updateGameArea() {
 
   if (myGameArea.frameNo == 1 || everyInterval(80)) {
     x = myGameArea.canvas.width;
-    y = myGameArea.canvas.height - 200
+    y = myGameArea.canvas.height - 200;
 
     minHeight = 80;
     maxHeight = 200;
-    height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+    height = Math.floor(
+      Math.random() * (maxHeight - minHeight + 1) + minHeight
+    );
 
     minGap = 40;
     maxGap = 120;
 
-    gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+    gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
 
     myObstacles.push(new component(10, height, "green", x, 0));
-    myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
+    myObstacles.push(
+      new component(10, x - height - gap, "green", x, height + gap)
+    );
   }
   for (i = 0; i < myObstacles.length; i += 1) {
     myObstacles[i].x += -1;
@@ -247,6 +257,8 @@ function updateGameArea() {
 
   myGameBlue.newPos();
   myGameBlue.update();
+  myScore.text = "SCORE: " + myGameArea.frameNo;
+  myScore.update();
   setControl();
 }
 
